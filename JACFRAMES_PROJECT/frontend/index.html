@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jacframes innovation Loan Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="header-section">
+            <h2>CBU Student Loan Portal</h2>
+            <p>Exclusive financial support for Copperbelt University students.</p>
+        </div>
+
+        <div class="auth-toggle">
+            <button id="loginTab" class="active" onclick="showAuth('login')">Login</button>
+            <button id="signupTab" onclick="showAuth('signup')">Sign Up</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="loginEmail">Student Email (Personal Email)</label>
+                <input type="email" id="loginEmail" placeholder="student.name@cbu.ac.zm" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPass">Password</label>
+                <input type="password" id="loginPass" required>
+            </div>
+            <button type="submit" class="submit-btn">Access Portal</button>
+        </form>
+
+        <form id="signupForm" class="auth-form" style="display: none;">
+            <div class="form-group">
+                <label for="regFullname">Full Name (As per ID info)</label>
+                <input type="text" id="regFullname" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sinNumber">SIN / Student Number</label>
+                    <input type="text" id="sinNumber" placeholder="e.g. 2312----" required>
+                </div>
+                <div class="form-group">
+                    <label for="yearStudy">Year of Study</label>
+                    <select id="yearStudy" required>
+                        <option value="1">Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5+">Year 5+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="school">School / Faculty</label>
+                <select id="school" required>
+                    <option value="">Select School</option>
+                    <option value="SBS">School of Business (SBS)</option>
+                    <option value="SNRE">Natural Resources (SNRE)</option>
+                    <option value="SOMS">Medicine (SOMS)</option>
+                    <option value="STE">School of Technology (STE)</option>
+                    <option value="SMNS">Mathematics & Natural Sciences</option>
+                    <option value="SA">School of Built Environment</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="loanAmount">Loan Amount (ZMW)</label>
+                    <input type="number" id="loanAmount" min="100" max="5000" placeholder="Max 5000" required>
+                </div>
+                <div class="form-group">
+                    <label for="purpose">Purpose of Loan</label>
+                    <select id="purpose" required>
+                        <option value="tuition">Tuition Fees</option>
+                        <option value="accommodation">Accommodation</option>
+                        <option value="books">Books/Materials</option>
+                        <option value="other">Personal/Emergency</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="regPass">Create Account Password</label>
+                <input type="password" id="regPass" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Application</button>
+        </form>
+    </div>
+
+    <script>
+        function showAuth(type) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+
+            if (type === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

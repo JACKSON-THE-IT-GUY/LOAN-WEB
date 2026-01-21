@@ -1,0 +1,280 @@
+/* General Base Styles */
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: white;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.main-logo { 
+    height: 50px; 
+    width: auto; 
+    object-fit: contain;
+}
+
+.brand-name { 
+    font-weight: bold; 
+    color: #002D62; 
+    font-size: 1.4rem; 
+    line-height: 1;
+}
+
+.brand-sub { 
+    color: #00A8E8; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    letter-spacing: 1px;
+}
+
+.logout-link { 
+    text-decoration: none; 
+    color: #666; 
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.logout-link:hover {
+    background: #fff5f5;
+    color: #d9534f;
+}
+
+/* Dashboard Layout */
+.dashboard-container { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+}
+
+.main-grid { 
+    display: grid; 
+    grid-template-columns: 350px 1fr; 
+    gap: 30px; 
+}
+
+/* Content Cards */
+.content-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 30px;
+}
+
+.card-header { 
+    margin-top: 0; 
+    color: #002D62; 
+    border-bottom: 2px solid #f4f7fa; 
+    padding-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.section-label { 
+    font-weight: bold; 
+    color: #555; 
+    margin: 25px 0 10px 0; 
+    font-size: 0.85rem; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form Elements */
+.input-field, .form-group { 
+    margin-bottom: 18px; 
+}
+
+label { 
+    display: block; 
+    font-size: 0.8rem; 
+    color: #888; 
+    margin-bottom: 6px; 
+    font-weight: 600;
+}
+
+input, select { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    background: #fafafa; 
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #00A8E8;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+}
+
+input[readonly] {
+    background-color: #f9f9f9;
+    color: #777;
+    cursor: not-allowed;
+}
+
+.split-row { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; 
+}
+
+.divider { 
+    border-top: 1px solid #f4f7fa; 
+    padding-top: 20px; 
+}
+
+/* Footer & Buttons */
+.form-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.total-amount { 
+    display: block; 
+    font-size: 1.8rem; 
+    font-weight: 800; 
+    color: #002D62; 
+}
+
+.download-btn {
+    background: white;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.download-btn:hover {
+    background: #f8f9fa;
+    border-color: #999;
+}
+
+.submit-btn { 
+    background: #002D62; 
+    color: white; 
+    border: none; 
+    padding: 12px 25px; 
+    border-radius: 6px; 
+    font-weight: 700;
+    cursor: pointer; 
+    transition: 0.3s;
+}
+
+.submit-btn:hover { 
+    background: #00A8E8; 
+    transform: translateY(-1px);
+}
+
+/* PRINT STYLES - Crucial for the Download PDF feature */
+@media print {
+    .navbar, .nav-right, .download-btn, .submit-btn, .logout-link {
+        display: none !important;
+    }
+
+    body {
+        background-color: white !important;
+    }
+
+    .dashboard-container {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .main-grid {
+        display: block !important; /* Stack columns for print */
+    }
+
+    .content-card {
+        box-shadow: none !important;
+        border: 1px solid #eee !important;
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+
+    input, select {
+        border: 1px solid #ccc !important;
+        background: transparent !important;
+    }
+}
+
+/* Responsive Grid */
+@media (max-width: 950px) {
+    .main-grid { grid-template-columns: 1fr; }
+}
+@media print {
+    /* Ensure the signature canvas is visible and clear */
+    canvas#signature-pad {
+        border: none !important;
+        border-bottom: 1px solid #000 !important;
+    }
+    
+    button[onclick="clearSignature()"] {
+        display: none !important;
+    }
+}
+/* HISTORY TABLE STYLING */
+    .history-section {
+      margin-top: 30px;
+    }
+
+    .history-table-container {
+      overflow-x: auto;
+      margin-top: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: rgba(0, 45, 98, 0.1);
+      text-align: left;
+      padding: 12px;
+      border-bottom: 2px solid #002d62;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .status-pill {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-approved { background: #d4edda; color: #155724; }
