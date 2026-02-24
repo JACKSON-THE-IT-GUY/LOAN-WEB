@@ -1,604 +1,264 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - JACFRAMES INNOVATION</title>
-    <style>
-      /* BACKGROUND STYLING */
-      body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        background-image:
-          linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-          url("money.jpg");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: white;
-      }
 
-      /* NAVBAR & LOGO */
-      .navbar {
-        background: rgba(0, 0, 0, 0.5) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        backdrop-filter: blur(15px);
-        padding: 5px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .main-logo {
-        height: 55px;
-        width: auto;
-        border-radius: 5px;
-      }
-      .brand-name {
-        color: #ffffff !important;
-        font-weight: bold;
-        font-size: 1.2rem;
-        line-height: 1;
-      }
-      .brand-sub {
-        color: #00a8e8 !important;
-        font-size: 0.75rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - JACFRAMES INNOVATION</title>
+  <style>
+    /* BACKGROUND STYLING */
+    body {
+      margin: 0; padding: 0; min-height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('money.jpg');
+      background-size: cover; background-position: center; background-attachment: fixed;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+    }
 
-      /* DARK TRANSPARENT CARDS */
-      .content-card {
-        background: rgba(0, 0, 0, 0.7) !important;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 20px;
-        transition: all 0.4s ease;
-      }
-      .content-card:hover {
-        background: rgba(0, 0, 0, 0.85) !important;
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(0, 168, 232, 0.3);
-        border: 1px solid rgba(0, 168, 232, 0.5);
-      }
+    /* NAVBAR & LOGO */
+    .navbar {
+      background: rgba(0, 0, 0, 0.5) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky; top: 0; z-index: 999;
+      backdrop-filter: blur(15px); padding: 5px 30px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .main-logo { height: 55px; width: auto; border-radius: 5px; }
+    .brand-name { color: #ffffff !important; font-weight: bold; font-size: 1.2rem; line-height: 1; }
+    .brand-sub { color: #00a8e8 !important; font-size: 0.75rem; }
 
-      .dashboard-container {
-        padding: 20px;
-        max-width: 1200px;
-        margin: auto;
-      }
-      .main-grid {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
-      }
+    /* DARK TRANSPARENT CARDS */
+    .content-card { 
+      background: rgba(0, 0, 0, 0.7) !important;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1); 
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); 
+      border-radius: 15px; padding: 20px; margin-bottom: 20px;
+      transition: all 0.4s ease;
+    }
+    .content-card:hover {
+      background: rgba(0, 0, 0, 0.85) !important;
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 168, 232, 0.3);
+      border: 1px solid rgba(0, 168, 232, 0.5);
+    }
 
-      @media (max-width: 768px) {
-        .main-grid {
-          grid-template-columns: 1fr;
-        }
-      }
+    .dashboard-container { padding: 20px; max-width: 1200px; margin: auto; }
+    .main-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+    
+    @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
 
-      .input-field,
-      .form-group {
-        margin-bottom: 12px;
-        text-align: left;
-      }
-      .input-field label,
-      .form-group label {
-        display: block;
-        font-size: 0.8rem;
-        font-weight: bold;
-        margin-bottom: 4px;
-        color: #00a8e8;
-      }
+    .input-field, .form-group { margin-bottom: 12px; text-align: left; }
+    .input-field label, .form-group label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; color: #00a8e8; }
+    
+    input, select { 
+      width: 100%; padding: 10px; border-radius: 6px; 
+      border: 1px solid rgba(255,255,255,0.2); 
+      background: rgba(255,255,255,0.1);
+      color: white;
+      box-sizing: border-box; 
+    }
+    input[readonly] { background: rgba(255,255,255,0.05); color: #00a8e8; font-weight: bold; }
 
-      input,
-      select {
-        width: 100%;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        box-sizing: border-box;
-      }
-      input[readonly] {
-        background: rgba(255, 255, 255, 0.05);
-        color: #00a8e8;
-        font-weight: bold;
-      }
-
-      /* WHATSAPP HOVER */
-      .whatsapp-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background-color: #25d366;
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 998;
+    /* WHATSAPP HOVER */
+    .whatsapp-float { 
+        position: fixed; bottom: 30px; right: 30px; 
+        background-color: #25d366; width: 65px; height: 65px; 
+        border-radius: 50%; display: flex; align-items: center; 
+        justify-content: center; z-index: 998;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      .whatsapp-float:hover {
-        transform: scale(1.15) rotate(15deg);
-        background-color: #128c7e;
-        box-shadow: 0 0 25px rgba(37, 211, 102, 0.7);
-      }
+    }
+    .whatsapp-float:hover { transform: scale(1.15) rotate(15deg); background-color: #128c7e; box-shadow: 0 0 25px rgba(37, 211, 102, 0.7); }
 
-      /* TERMS OVERLAY */
-      .terms-overlay {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 350px;
-        height: 100%;
-        background: white;
-        z-index: 1000;
-        transition: 0.4s ease;
-        color: #333;
-        display: flex;
-        flex-direction: column;
-      }
-      .terms-overlay.active {
-        right: 0;
-      }
-      .terms-header {
-        padding: 20px;
-        background: #002d62;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .contact-box {
-        background: #f4f7f9;
-        padding: 10px;
-        border-radius: 8px;
-        margin-top: 10px;
-        border-left: 4px solid #00a8e8;
-      }
-      .contact-box a {
-        display: block;
-        margin: 8px 0;
-        font-family: monospace;
-        font-weight: bold;
-        color: #002d62;
-        font-size: 1rem;
-        text-decoration: none;
-      }
+    /* TERMS OVERLAY */
+    .terms-overlay { position: fixed; top: 0; right: -100%; width: 350px; height: 100%; background: white; z-index: 1000; transition: 0.4s ease; color: #333; display: flex; flex-direction: column; }
+    .terms-overlay.active { right: 0; }
+    .terms-header { padding: 20px; background: #002d62; color: white; display: flex; justify-content: space-between; align-items: center; }
+    .contact-box { background: #f4f7f9; padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #00a8e8; }
+    .contact-box a { display: block; margin: 8px 0; font-family: monospace; font-weight: bold; color: #002d62; font-size: 1rem; text-decoration: none; }
 
-      .submit-btn {
-        background: #00a8e8;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
-      }
+    .submit-btn { background: #00a8e8; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    
+    table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; }
+    th { background: #002d62; padding: 12px; text-align: left; font-size: 0.85rem; }
+    td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+  </style>
+</head>
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      th {
-        background: #002d62;
-        padding: 12px;
-        text-align: left;
-        font-size: 0.85rem;
-      }
-      td {
-        padding: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 0.85rem;
-      }
-    </style>
-  </head>
+<body>
+  <a href="https://wa.me/260779495904" target="_blank" class="whatsapp-float">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" width="35" />
+  </a>
 
-  <body>
-    <a href="https://wa.me/260779495904" target="_blank" class="whatsapp-float">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-        alt="WA"
-        width="35"
-      />
-    </a>
-
-    <div id="termsPanel" class="terms-overlay">
-      <div class="terms-header">
-        <h3 style="margin: 0; font-size: 1.1rem">Terms & Conditions</h3>
-        <span style="cursor: pointer; font-size: 1.5rem" onclick="toggleTerms()"
-          >×</span
-        >
-      </div>
-      <div
-        style="
-          padding: 20px;
-          overflow-y: auto;
-          font-size: 0.85rem;
-          line-height: 1.6;
-          color: #333;
-          flex-grow: 1;
-        "
-      >
-        <h4 style="color: #002d62; border-bottom: 1px solid #eee">
-          1. Loan Agreement
-        </h4>
-        <p>
-          By applying, you authorize JACFRAMES INNOVATION to verify your student
-          status and creditworthiness.
-        </p>
-
-        <h4 style="color: #002d62; border-bottom: 1px solid #eee">
-          2. Interest and Fees
-        </h4>
-        <p>
-          Interest rates (12.5% to 40%). A late repayment fee of 5% per day
-          applies after the Due Date.
-        </p>
-
-        <h4 style="color: #002d62; border-bottom: 1px solid #eee">
-          3. Collateral
-        </h4>
-        <p>
-          The collateral item remains property of JACFRAMES INNOVATION in the
-          event of default exceeding 14 days.
-        </p>
-
-        <h4 style="color: #002d62; border-bottom: 1px solid #eee">
-              4. LATE PAYMENT
-        </h4>
-        <p>
-          A penalty of 5% maybe be charged for late repayments (e.g., percentage of overdue amount)
-        </p>
-
-        <h4 style="color: #002d62; border-bottom: 1px solid #eee">
-          5. Repayment & Support
-        </h4>
-        <p>repayment must be made in accordance with the repayment schedule agreed upon at loan disbursement.</p>
-        <p>acceptable payment channels include airtel money, MTN and hand cash money approved by the company</p>
-        <p>early repayment is allowed - with or without penalties based on company policy.</p>
-        <div class="contact-box">
-          <a href="tel:+260779495904">• Call: +260 779 495 904</a>
-          <a href="https://wa.me/260779495904" style="color: #25d366"
-            >• WhatsApp Support</a
-          >
-          <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0" />
-          <a href="tel:0971801172">• 0971 801 172</a>
-          <a href="tel:0976985940">• 0976 985 940</a>
-          <a href="tel:0769801655">• 0769 801 655</a>
-        </div>
+  <div id="termsPanel" class="terms-overlay">
+    <div class="terms-header">
+      <h3 style="margin:0; font-size: 1.1rem;">Terms & Conditions</h3>
+      <span style="cursor:pointer; font-size:1.5rem" onclick="toggleTerms()">×</span>
+    </div>
+    <div style="padding: 20px; overflow-y: auto; font-size: 0.85rem; line-height: 1.6; color: #333; flex-grow: 1;">
+      <h4 style="color:#002d62; border-bottom:1px solid #eee;">1. Loan Agreement</h4>
+      <p>By applying, you authorize JACFRAMES INNOVATION to verify your student status and creditworthiness.</p>
+      
+      <h4 style="color:#002d62; border-bottom:1px solid #eee;">2. Interest and Fees</h4>
+      <p>Interest rates (12.5% to 40%). A late repayment fee of 5% per day applies after the Due Date.</p>
+      
+      <h4 style="color:#002d62; border-bottom:1px solid #eee;">3. Collateral</h4>
+      <p>The collateral item remains property of JACFRAMES INNOVATION in the event of default exceeding 14 days.</p>
+      
+      <h4 style="color:#002d62; border-bottom:1px solid #eee;">4. Repayment & Support</h4>
+      <div class="contact-box">
+        <a href="tel:+260779495904">• Call: +260 779 495 904</a>
+        <a href="https://wa.me/260779495904" style="color: #25d366;">• WhatsApp Support</a>
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+        <a href="tel:0971801172">• 0971 801 172</a>
+        <a href="tel:0976985940">• 0976 985 940</a>
+        <a href="tel:0769801655">• 0769 801 655</a>
       </div>
     </div>
+  </div>
 
-    <nav class="navbar">
-      <div class="logo-container">
-        <img src="picture1.png" alt="LOGO" class="main-logo" />
-        <div>
-          <span class="brand-name">JACFRAMES</span><br /><span class="brand-sub"
-            >INNOVATION</span
-          >
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; gap: 20px">
-        <span id="refDisplay">REF: JAC-000000</span>
-        <a href="login.html" class="logout-link" onclick="localStorage.clear()"
-          >Logout</a
-        >
-      </div>
-    </nav>
+  <nav class="navbar">
+    <div class="logo-container">
+      <img src="picture1.png" alt="LOGO" class="main-logo">
+      <div><span class="brand-name">JACFRAMES</span><br><span class="brand-sub">INNOVATION</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:20px">
+      <span id="refDisplay">REF: JAC-000000</span>
+      <a href="login.html" class="logout-link" onclick="localStorage.clear()">Logout</a>
+    </div>
+  </nav>
 
-    <div class="dashboard-container">
-      <div class="main-grid">
-        <div class="side-column">
-          <div class="content-card">
-            <h3 style="margin-top: 0; color: #00a8e8">Client Profile</h3>
-            <div class="input-field">
-              <label>Full Name</label
-              ><input type="text" id="fullName" readonly />
-            </div>
-            <div class="input-field">
-              <label>School Name</label
-              ><input
-                type="text"
-                id="schoolName"
-                class="val-field"
-                placeholder="e.g.  CBU"
-              />
-            </div>
-            <div class="input-field">
-              <label>Program of Study</label
-              ><input
-                type="text"
-                id="studyProgram"
-                class="val-field"
-                placeholder="e.g. Bachelor of information communication technology"
-              />
-            </div>
-            <div class="input-field">
-              <label>Year of Study</label>
-              <select id="yearOfStudy" class="val-field">
-                <option value="">Select Year</option>
-                <option>Year 1</option>
-                <option>Year 2</option>
-                <option>Year 3</option>
-                <option>Year 4</option>
-                <option>Year 5+</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label>Contact Number</label
-              ><input
-                type="text"
-                id="contactNumber"
-                class="val-field"
-                placeholder="09/07/+260"
-              />
-            </div>
-            <div class="input-field">
-              <label>Gender</label>
-              <select id="gender" class="val-field">
-                <option value="">Select</option>
-                <option>Male</option>
-                <option>Female</option>
-              </select>
-            </div>
-            <div class="input-field">
-              <label>SIN Number</label
-              ><input type="number" id="sinNumber" readonly />
-            </div>
-            <div class="input-field">
-              <label>Physical Address</label
-              ><input
-                type="text"
-                id="address"
-                class="val-field"
-                placeholder="Hostels/Area"
-              />
-            </div>
+  <div class="dashboard-container">
+    <div class="main-grid">
+      <div class="side-column">
+        <div class="content-card">
+          <h3 style="margin-top:0; color:#00a8e8;">Client Profile</h3>
+          <div class="input-field"><label>Full Name</label><input type="text" id="fullName" readonly></div>
+          <div class="input-field"><label>School Name</label><input type="text" id="schoolName" class="val-field" placeholder="e.g. UNZA, CBU"></div>
+          <div class="input-field"><label>Program of Study</label><input type="text" id="studyProgram" class="val-field" placeholder="e.g. Bachelor of Arts"></div>
+          <div class="input-field">
+            <label>Year of Study</label>
+            <select id="yearOfStudy" class="val-field">
+              <option value="">Select Year</option>
+              <option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5+</option>
+            </select>
           </div>
+          <div class="input-field"><label>Contact Number</label><input type="text" id="contactNumber" class="val-field" placeholder="09/07/+260"></div>
+          <div class="input-field">
+            <label>Gender</label>
+            <select id="gender" class="val-field">
+              <option value="">Select</option>
+              <option>Male</option><option>Female</option>
+            </select>
+          </div>
+          <div class="input-field"><label>SIN Number</label><input type="number" id="sinNumber" readonly></div>
+          <div class="input-field"><label>Physical Address</label><input type="text" id="address" class="val-field" placeholder="Hostels/Area"></div>
         </div>
+      </div>
 
-        <div class="main-column">
-          <div class="content-card">
-            <h3 style="margin-top: 0; color: #00a8e8">Apply for Loan</h3>
-            <div
-              style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
-            >
-              <div class="form-group">
-                <label>Amount (ZMW)</label
-                ><input type="number" id="principal" oninput="updateRate()" />
-              </div>
-              <div class="form-group">
-                <label>Period</label>
-                <select id="period" onchange="updateRate()">
-                  <option value="1" data-rate="12.5">1 Week (12.5%)</option>
-                  <option value="2" data-rate="25">2 Weeks (25%)</option>
-                  <option value="3" data-rate="30">3 Weeks (30%)</option>
-                  <option value="4" data-rate="40">4 Weeks (40%)</option>
-                </select>
-              </div>
-            </div>
+      <div class="main-column">
+        <div class="content-card">
+          <h3 style="margin-top:0; color:#00a8e8;">Apply for Loan</h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+            <div class="form-group"><label>Amount (ZMW)</label><input type="number" id="principal" oninput="updateRate()"></div>
             <div class="form-group">
-              <label>Collateral Item</label
-              ><input
-                type="text"
-                id="collateral"
-                class="val-field"
-                placeholder="Item description"
-              />
+              <label>Period</label>
+              <select id="period" onchange="updateRate()">
+                <option value="1" data-rate="12.5">1 Week (12.5%)</option>
+                <option value="2" data-rate="25">2 Weeks (25%)</option>
+                <option value="3" data-rate="30">3 Weeks (30%)</option>
+                <option value="4" data-rate="40">4 Weeks (40%)</option>
+              </select>
             </div>
-            <div
-              style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
-            >
-              <div class="form-group">
-                <label>Start Date</label
-                ><input type="date" id="startDate" readonly />
-              </div>
-              <div class="form-group">
-                <label>Due Date</label
-                ><input type="date" id="dueDate" readonly />
-              </div>
-            </div>
+          </div>
+          <div class="form-group"><label>Collateral Item</label><input type="text" id="collateral" class="val-field" placeholder="Item description"></div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+            <div class="form-group"><label>Start Date</label><input type="date" id="startDate" readonly></div>
+            <div class="form-group"><label>Due Date</label><input type="date" id="dueDate" readonly></div>
+          </div>
 
-            <div style="margin: 15px 0">
-              <label
-                style="color: #00a8e8; font-size: 0.8rem; font-weight: bold"
-                >E-Signature Required</label
-              >
-              <div
-                id="sigBox"
-                style="
-                  border: 2px dashed #00a8e8;
-                  height: 100px;
-                  background: rgba(0, 0, 0, 0.3);
-                "
-              >
-                <canvas id="signature-pad"></canvas>
-              </div>
-              <button
-                onclick="clearSignature()"
-                style="
-                  color: red;
-                  background: none;
-                  border: none;
-                  cursor: pointer;
-                  font-size: 0.7rem;
-                "
-              >
-                Clear Signature
-              </button>
-            </div>
+          <div style="margin: 15px 0;">
+            <label style="color:#00a8e8; font-size:0.8rem; font-weight:bold;">E-Signature Required</label>
+            <div id="sigBox" style="border: 2px dashed #00a8e8; height: 100px; background: rgba(0,0,0,0.3);"><canvas id="signature-pad"></canvas></div>
+            <button onclick="clearSignature()" style="color:red; background:none; border:none; cursor:pointer; font-size:0.7rem;">Clear Signature</button>
+          </div>
 
-            <div style="margin-bottom: 15px">
-              <input type="checkbox" id="terms" /> I agree to the
-              <span
-                style="color: #00a8e8; cursor: pointer"
-                onclick="toggleTerms()"
-                >Terms & Conditions</span
-              >.
-            </div>
+          <div style="margin-bottom:15px;"><input type="checkbox" id="terms"> I agree to the <span style="color:#00a8e8; cursor:pointer;" onclick="toggleTerms()">Terms & Conditions</span>.</div>
 
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
-              <span
-                id="totalReturn"
-                style="font-size: 1.5rem; font-weight: bold; color: #00a8e8"
-                >0.00 ZMW</span
-              >
-              <button class="submit-btn" onclick="validateAndSubmit()">
-                Submit Application
-              </button>
-            </div>
+          <div style="display:flex; justify-content: space-between; align-items: center;">
+            <span id="totalReturn" style="font-size:1.5rem; font-weight:bold; color:#00a8e8;">0.00 ZMW</span>
+            <button class="submit-btn" onclick="validateAndSubmit()">Submit Application</button>
           </div>
         </div>
       </div>
-
-      <div class="content-card" style="margin-top: 20px">
-        <h3 style="color: #00a8e8">My Loan History</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Ref #</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="historyBody">
-            <tr>
-              <td colspan="4" style="text-align: center">No records found.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
-    <script>
-      const canvas = document.getElementById("signature-pad");
-      const ctx = canvas.getContext("2d");
-      let drawing = false,
-        hasSigned = false;
+    <div class="content-card" style="margin-top:20px;">
+      <h3 style="color:#00a8e8;">My Loan History</h3>
+      <table>
+        <thead><tr><th>Ref #</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="historyBody"><tr><td colspan="4" style="text-align:center;">No records found.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 
-      window.onload = () => {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-          document.getElementById("fullName").value = user.name;
-          document.getElementById("sinNumber").value = user.sin;
-        }
-        document.getElementById("startDate").value = new Date()
-          .toISOString()
-          .split("T")[0];
-        document.getElementById("refDisplay").innerText =
-          "REF: JAC-" + Math.floor(100000 + Math.random() * 900000);
-        updateRate();
+  <script>
+    const canvas = document.getElementById("signature-pad");
+    const ctx = canvas.getContext("2d");
+    let drawing = false, hasSigned = false;
+
+    window.onload = () => {
+      canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
+      const user = JSON.parse(localStorage.getItem("user"));
+      if(user) { 
+        document.getElementById("fullName").value = user.name; 
+        document.getElementById("sinNumber").value = user.sin; 
+      }
+      document.getElementById("startDate").value = new Date().toISOString().split("T")[0];
+      document.getElementById("refDisplay").innerText = "REF: JAC-" + Math.floor(100000 + Math.random() * 900000);
+      updateRate();
+    };
+
+    function updateRate() {
+      const p = parseFloat(document.getElementById("principal").value) || 0;
+      const r = parseFloat(document.getElementById("period").options[document.getElementById("period").selectedIndex].getAttribute("data-rate"));
+      document.getElementById("totalReturn").innerText = (p + (p*r/100)).toFixed(2) + " ZMW";
+      let d = new Date(); d.setDate(d.getDate() + (document.getElementById("period").value * 7));
+      document.getElementById("dueDate").value = d.toISOString().split("T")[0];
+    }
+
+    canvas.addEventListener("mousedown", () => { drawing = true; hasSigned = true; ctx.beginPath(); });
+    canvas.addEventListener("mousemove", (e) => { 
+      if(!drawing) return; 
+      const r = canvas.getBoundingClientRect(); 
+      ctx.lineTo(e.clientX-r.left, e.clientY-r.top); 
+      ctx.strokeStyle="#00a8e8"; ctx.lineWidth=3; ctx.stroke(); 
+    });
+    window.addEventListener("mouseup", () => drawing = false);
+
+    function clearSignature() { ctx.clearRect(0,0,canvas.width,canvas.height); hasSigned = false; }
+    function toggleTerms() { document.getElementById("termsPanel").classList.toggle("active"); }
+
+    async function validateAndSubmit() {
+      const fields = document.querySelectorAll('.val-field');
+      let isValid = true;
+      fields.forEach(f => { if(!f.value) { f.style.border="1px solid red"; isValid = false; } else { f.style.border="1px solid rgba(255,255,255,0.2)"; } });
+      
+      if(!hasSigned || !document.getElementById("terms").checked || !isValid) return alert("Please complete all fields, sign and accept terms.");
+
+      const loanData = {
+        userId: JSON.parse(localStorage.getItem("user")).id,
+        amount: document.getElementById("principal").value,
+        referenceNumber: document.getElementById("refDisplay").innerText.replace("REF: ", ""),
+        status: "Pending"
       };
 
-      function updateRate() {
-        const p = parseFloat(document.getElementById("principal").value) || 0;
-        const r = parseFloat(
-          document
-            .getElementById("period")
-            .options[
-              document.getElementById("period").selectedIndex
-            ].getAttribute("data-rate"),
-        );
-        document.getElementById("totalReturn").innerText =
-          (p + (p * r) / 100).toFixed(2) + " ZMW";
-        let d = new Date();
-        d.setDate(d.getDate() + document.getElementById("period").value * 7);
-        document.getElementById("dueDate").value = d
-          .toISOString()
-          .split("T")[0];
-      }
-
-      canvas.addEventListener("mousedown", () => {
-        drawing = true;
-        hasSigned = true;
-        ctx.beginPath();
-      });
-      canvas.addEventListener("mousemove", (e) => {
-        if (!drawing) return;
-        const r = canvas.getBoundingClientRect();
-        ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
-        ctx.strokeStyle = "#00a8e8";
-        ctx.lineWidth = 3;
-        ctx.stroke();
-      });
-      window.addEventListener("mouseup", () => (drawing = false));
-
-      function clearSignature() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        hasSigned = false;
-      }
-      function toggleTerms() {
-        document.getElementById("termsPanel").classList.toggle("active");
-      }
-
-      async function validateAndSubmit() {
-        const fields = document.querySelectorAll(".val-field");
-        let isValid = true;
-        fields.forEach((f) => {
-          if (!f.value) {
-            f.style.border = "1px solid red";
-            isValid = false;
-          } else {
-            f.style.border = "1px solid rgba(255,255,255,0.2)";
-          }
-        });
-
-        if (!hasSigned || !document.getElementById("terms").checked || !isValid)
-          return alert("Please complete all fields, sign and accept terms.");
-
-        const loanData = {
-          userId: JSON.parse(localStorage.getItem("user")).id,
-          amount: document.getElementById("principal").value,
-          referenceNumber: document
-            .getElementById("refDisplay")
-            .innerText.replace("REF: ", ""),
-          status: "Pending",
-        };
-
-        try {
-          const res = await fetch("http://localhost:5000/api/loans/apply", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(loanData),
-          });
-          if (res.ok) {
-            alert("Loan Submitted!");
-            location.reload();
-          }
-        } catch (e) {
-          alert("Server connection failed.");
-        }
-      }
-    </script>
-  </body>
+      try {
+        const res = await fetch('http://localhost:5000/api/loans/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loanData) });
+        if(res.ok) { alert("Loan Submitted!"); location.reload(); }
+      } catch(e) { alert("Server connection failed."); }
+    }
+  </script>
+</body>
 </html>
