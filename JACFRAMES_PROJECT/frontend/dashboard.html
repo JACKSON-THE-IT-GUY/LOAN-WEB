@@ -83,6 +83,27 @@
     table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; }
     th { background: #002d62; padding: 12px; text-align: left; font-size: 0.85rem; }
     td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .submit-btn { width: 100%; padding: 14px; font-size: 1rem; }
+      .main-grid { gap: 12px; padding: 12px; }
+      #avatarPreview { width: 64px; height: 64px; }
+      #sigBox { height: 140px; }
+      canvas#signature-pad { height: 140px !important; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead tr { position: absolute; top: -9999px; left: -9999px; }
+      tr { margin: 0 0 1rem 0; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 8px; }
+      td { border: none; position: relative; padding-left: 50%; }
+      td:before { position: absolute; left: 12px; width: 45%; padding-right: 10px; white-space: nowrap; font-weight: bold; }
+      td:nth-of-type(1):before { content: "Ref"; }
+      td:nth-of-type(2):before { content: "Amount"; }
+      td:nth-of-type(3):before { content: "Status"; }
+      td:nth-of-type(4):before { content: "Action"; }
+      /* Make action buttons stack nicely */
+      td button { display: block; width: 100%; margin: 6px 0; }
+    }
   </style>
 </head>
 
@@ -134,6 +155,15 @@
       <div class="side-column">
         <div class="content-card">
           <h3 style="margin-top:0; color:#00a8e8;">Client Profile</h3>
+          <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px;">
+            <img id="avatarPreview" src="picture1.png" alt="avatar" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.08);">
+            <div style="flex:1">
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input type="file" id="avatarInput" accept="image/*" style="color:transparent;" />
+              </div>
+              <div style="font-size:0.8rem; opacity:0.85; margin-top:6px;">Your profile picture</div>
+            </div>
+          </div>
           <div class="input-field"><label>Full Name</label><input type="text" id="fullName" readonly></div>
           <div class="input-field"><label>School Name</label><input type="text" id="schoolName" class="val-field" placeholder="e.g. UNZA, CBU"></div>
           <div class="input-field"><label>Program of Study</label><input type="text" id="studyProgram" class="val-field" placeholder="e.g. Bachelor of Arts"></div>
@@ -180,8 +210,10 @@
 
           <div style="margin: 15px 0;">
             <label style="color:#00a8e8; font-size:0.8rem; font-weight:bold;">E-Signature Required</label>
-            <div id="sigBox" style="border: 2px dashed #00a8e8; height: 100px; background: rgba(0,0,0,0.3);"><canvas id="signature-pad"></canvas></div>
-            <button onclick="clearSignature()" style="color:red; background:none; border:none; cursor:pointer; font-size:0.7rem;">Clear Signature</button>
+            <div id="sigBox" style="border: 2px dashed #00a8e8; height: 100px; background: rgba(0,0,0,0.3); position:relative;">
+              <canvas id="signature-pad" style="width:100%; height:100%; display:block;"></canvas>
+            </div>
+            <button id="clearSigBtn" style="color:red; background:none; border:none; cursor:pointer; font-size:0.7rem;">Clear Signature</button>
           </div>
 
           <div style="margin-bottom:15px;"><input type="checkbox" id="terms"> I agree to the <span style="color:#00a8e8; cursor:pointer;" onclick="toggleTerms()">Terms & Conditions</span>.</div>
@@ -208,16 +240,47 @@
     const ctx = canvas.getContext("2d");
     let drawing = false, hasSigned = false;
 
+    function resizeCanvas() {
+      const parent = canvas.parentElement;
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+      const w = parent.clientWidth;
+      const h = parent.clientHeight;
+      canvas.width = Math.floor(w * ratio);
+      canvas.height = Math.floor(h * ratio);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.scale(ratio, ratio);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#00a8e8';
+      ctx.lineWidth = 3;
+    }
+
+    window.addEventListener('resize', () => { resizeCanvas(); });
+
     window.onload = () => {
-      canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
+      resizeCanvas();
       const user = JSON.parse(localStorage.getItem("user"));
-      if(user) { 
-        document.getElementById("fullName").value = user.name; 
-        document.getElementById("sinNumber").value = user.sin; 
+      if(user) {
+        document.getElementById("fullName").value = user.name;
+        document.getElementById("sinNumber").value = user.sin;
+        // initialize avatar preview if present
+        if(user.avatar) {
+          try { document.getElementById('avatarPreview').src = (location.origin || 'http://localhost:5000') + user.avatar; } catch(e){}
+        }
       }
       document.getElementById("startDate").value = new Date().toISOString().split("T")[0];
       document.getElementById("refDisplay").innerText = "REF: JAC-" + Math.floor(100000 + Math.random() * 900000);
       updateRate();
+      loadHistory();
+      // avatar input handlers
+      const avatarInput = document.getElementById('avatarInput');
+      avatarInput.addEventListener('change', () => {
+        const f = avatarInput.files[0];
+        if(!f) return;
+        const url = URL.createObjectURL(f);
+        document.getElementById('avatarPreview').src = url;
+      });
     };
 
     function updateRate() {
@@ -228,16 +291,23 @@
       document.getElementById("dueDate").value = d.toISOString().split("T")[0];
     }
 
-    canvas.addEventListener("mousedown", () => { drawing = true; hasSigned = true; ctx.beginPath(); });
-    canvas.addEventListener("mousemove", (e) => { 
-      if(!drawing) return; 
-      const r = canvas.getBoundingClientRect(); 
-      ctx.lineTo(e.clientX-r.left, e.clientY-r.top); 
-      ctx.strokeStyle="#00a8e8"; ctx.lineWidth=3; ctx.stroke(); 
+    // Mouse events
+    canvas.addEventListener("mousedown", (e) => { drawing = true; hasSigned = true; ctx.beginPath(); const r = canvas.getBoundingClientRect(); ctx.moveTo(e.clientX - r.left, e.clientY - r.top); });
+    canvas.addEventListener("mousemove", (e) => {
+      if(!drawing) return;
+      const r = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+      ctx.stroke();
     });
-    window.addEventListener("mouseup", () => drawing = false);
+    window.addEventListener("mouseup", () => { drawing = false; });
+
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); const t = e.touches[0]; const r = canvas.getBoundingClientRect(); drawing = true; hasSigned = true; ctx.beginPath(); ctx.moveTo(t.clientX - r.left, t.clientY - r.top); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if(!drawing) return; const t = e.touches[0]; const r = canvas.getBoundingClientRect(); ctx.lineTo(t.clientX - r.left, t.clientY - r.top); ctx.stroke(); });
+    canvas.addEventListener('touchend', (e) => { e.preventDefault(); drawing = false; });
 
     function clearSignature() { ctx.clearRect(0,0,canvas.width,canvas.height); hasSigned = false; }
+    document.getElementById('clearSigBtn').addEventListener('click', clearSignature);
     function toggleTerms() { document.getElementById("termsPanel").classList.toggle("active"); }
 
     async function validateAndSubmit() {
@@ -247,17 +317,112 @@
       
       if(!hasSigned || !document.getElementById("terms").checked || !isValid) return alert("Please complete all fields, sign and accept terms.");
 
+      const user = JSON.parse(localStorage.getItem("user")) || {};
       const loanData = {
-        userId: JSON.parse(localStorage.getItem("user")).id,
+        userId: user.id,
+        sinNumber: user.sin,
         amount: document.getElementById("principal").value,
         referenceNumber: document.getElementById("refDisplay").innerText.replace("REF: ", ""),
-        status: "Pending"
+        status: "Pending",
+        signature: hasSigned ? canvas.toDataURL('image/png') : null
       };
 
       try {
         const res = await fetch('http://localhost:5000/api/loans/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loanData) });
-        if(res.ok) { alert("Loan Submitted!"); location.reload(); }
+        if(res.ok) { alert("Loan Submitted!"); loadHistory(); }
       } catch(e) { alert("Server connection failed."); }
+    }
+
+    // Upload avatar to backend
+    async function uploadAvatar(e) {
+      const file = document.getElementById('avatarInput').files[0];
+      if(!file) return alert('Please choose an image first.');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const token = localStorage.getItem('token') || '';
+      const fd = new FormData();
+      fd.append('avatar', file);
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/upload-avatar', { method: 'POST', headers: { 'x-auth-token': token }, body: fd });
+        if(!res.ok) throw new Error('Upload failed');
+        const data = await res.json();
+        // Expecting { avatar: '/uploads/profile/filename.png' } or similar
+        if(data && data.avatar) {
+          const avatarPath = data.avatar.startsWith('/') ? data.avatar : '/' + data.avatar;
+          document.getElementById('avatarPreview').src = (location.origin || 'http://localhost:5000') + avatarPath;
+          if(user) { user.avatar = avatarPath; localStorage.setItem('user', JSON.stringify(user)); }
+          alert('Avatar uploaded successfully');
+        } else {
+          alert('Upload succeeded but no avatar path returned.');
+        }
+      } catch(err) { alert('Avatar upload failed'); }
+    }
+
+    // Fetch and render user's loan history
+    async function loadHistory() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const tbody = document.getElementById('historyBody');
+      if(!user) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Please login to view history.</td></tr>'; return; }
+      try {
+        const res = await fetch(`http://localhost:5000/api/loans/history/${encodeURIComponent(user.sin)}`);
+        if(!res.ok) throw new Error('Failed to load');
+        const data = await res.json();
+        if(!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">No records found.</td></tr>'; return;
+        }
+        tbody.innerHTML = '';
+        data.forEach(loan => {
+          const tr = document.createElement('tr');
+          const ref = document.createElement('td'); ref.innerText = loan.referenceNumber || loan.reference || 'JAC-000000';
+          const amt = document.createElement('td'); amt.innerText = (loan.amount || loan.principal || 0) + ' ZMW';
+          const status = document.createElement('td'); status.innerText = (loan.status === 'Paid' ? 'Paid' : (loan.status === 'Approved' ? 'Approved' : 'Not Paid'));
+          const actionTd = document.createElement('td');
+
+          // Approve button (visible when not approved)
+          if(loan.status !== 'Approved'){
+            const approveBtn = document.createElement('button');
+            approveBtn.className = 'submit-btn';
+            approveBtn.style.marginRight = '8px';
+            approveBtn.innerText = 'Approve';
+            approveBtn.addEventListener('click', async () => { await approveLoan(loan._id); });
+            actionTd.appendChild(approveBtn);
+          }
+
+          // Mark Paid button (visible when not paid)
+          if(loan.status !== 'Paid'){
+            const paidBtn = document.createElement('button');
+            paidBtn.className = 'submit-btn';
+            paidBtn.style.background = '#28a745';
+            paidBtn.innerText = 'Mark Paid';
+            paidBtn.addEventListener('click', async () => { await payLoan(loan._id); });
+            actionTd.appendChild(paidBtn);
+          }
+
+          tr.appendChild(ref); tr.appendChild(amt); tr.appendChild(status); tr.appendChild(actionTd);
+          tbody.appendChild(tr);
+        });
+      } catch (e) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Failed to load history.</td></tr>'; }
+    }
+
+    // Call backend to mark loan as paid
+    async function payLoan(id){
+      const token = localStorage.getItem('token') || '';
+      try {
+        const res = await fetch(`http://localhost:5000/api/loans/${encodeURIComponent(id)}/pay`, { method: 'PUT', headers: { 'x-auth-token': token } });
+        if(!res.ok) throw new Error('Failed');
+        alert('Loan marked as paid');
+        loadHistory();
+      } catch(e){ alert('Failed to mark loan as paid.'); }
+    }
+
+    // Call backend to approve loan
+    async function approveLoan(id){
+      const token = localStorage.getItem('token') || '';
+      try {
+        const res = await fetch(`http://localhost:5000/api/loans/${encodeURIComponent(id)}/approve`, { method: 'PUT', headers: { 'x-auth-token': token } });
+        if(!res.ok) throw new Error('Failed');
+        alert('Loan approved');
+        loadHistory();
+      } catch(e){ alert('Failed to approve loan.'); }
     }
   </script>
 </body>

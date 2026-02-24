@@ -9,6 +9,7 @@ const LoanSchema = new mongoose.Schema({
     contactNumber: String,
     sinNumber: String,
     amount: Number,
+    signature: String,
     repayment: Number,
     status: { type: String, default: 'Pending' },
     referenceNumber: { type: String, unique: true },
