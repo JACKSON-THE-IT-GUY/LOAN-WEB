@@ -1,0 +1,3 @@
+[dotenv@17.2.3] injecting env (6) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+Server started on http://localhost:5000 (development)
+MongoDB Connected: JACFRAMES Database
