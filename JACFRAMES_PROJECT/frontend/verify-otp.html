@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify OTP - JACFRAMES</title>
+    <style>
+      /* BACKGROUND STYLING */
+      body {
+        margin: 0; padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("money.jpg");
+        background-size: cover; background-position: center; background-attachment: fixed;
+      }
+      /* GLASS-MORPHISM CONTAINER */
+      .auth-container {
+        background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); border-radius: 20px;
+        padding: 40px; width: 100%; max-width: 400px; color: white; text-align: center;
+      }
+      .header-section h2 { margin: 0; color: #ffffff; letter-spacing: 1.5px; font-size: 1.8rem; }
+      .header-section p { font-size: 0.85rem; opacity: 0.8; margin-bottom: 30px; }
+      /* FORM STYLING */
+      .form-group { text-align: left; margin-bottom: 20px; }
+      .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; font-weight: 600; color: #00a8e8; }
+      .form-group input { width: 100%; padding: 12px 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; box-sizing: border-box; outline: none; transition: 0.3s; }
+      .form-group input:focus { border-color: #00a8e8; background: rgba(255, 255, 255, 0.2); }
+      .submit-btn { width: 100%; padding: 14px; background: #00a8e8; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+      .submit-btn:hover { background: #0086b9; transform: translateY(-2px); }
+      ::placeholder { color: rgba(255, 255, 255, 0.4); }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="header-section">
+        <h2>Verify Code</h2>
+        <p>Enter the 6-digit code sent to your email.</p>
+      </div>
+
+      <form id="otpForm">
+        <div class="form-group">
+          <label>6-Digit Code</label>
+          <input type="text" id="otp" placeholder="123456" maxlength="6" required />
+        </div>
+        <button type="button" class="submit-btn" onclick="handleVerifyOTP()">Verify Code</button>
+      </form>
+    </div>
+
+    <script>
+      const API_URL = "http://localhost:5000";
+
+      async function handleVerifyOTP() {
+        const otp = document.getElementById("otp").value;
+        const email = localStorage.getItem("resetEmail");
+
+        if (!otp || otp.length !== 6) return alert("Please enter the 6-digit code.");
+        if (!email) return alert("Session expired. Please try requesting the code again.");
+
+        try {
+          const response = await fetch(`${API_URL}/api/auth/verify-otp`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, otp }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert("Code verified!");
+            window.location.href = "reset-password.html";
+          } else {
+            alert(data.msg || "Invalid code.");
+          }
+        } catch (err) { alert("Server error."); }
+      }
+    </script>
+  </body>
+</html>
