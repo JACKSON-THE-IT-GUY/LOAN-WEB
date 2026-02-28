@@ -14,5 +14,5 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: JACFRAMES_PROJECT/frontend # This tells the action where your files are
-          branch: gh-pages # The branch the action should deploy to
+          folder: . JACFRAMES_PROJECT
+          branch: gh-pages
