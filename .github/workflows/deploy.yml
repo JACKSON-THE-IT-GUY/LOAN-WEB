@@ -11,8 +11,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # This step ensures GitHub Pages does not process your files with Jekyll
+      - name: Disable Jekyll
+        run: touch .nojekyll
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: . JACFRAMES_PROJECT
+          folder: . # Changed to . to deploy files from the root
           branch: gh-pages
